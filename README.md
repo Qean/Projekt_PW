@@ -1,5 +1,5 @@
 # Projekt z "Programowanie Współbieżne"
-IDE: Rider
+IDE: Rider 2019.1.1
 
 Language: C#
 
