@@ -1,7 +1,7 @@
 # Projekt z "Programowanie Współbieżne"
 IDE: Rider 2019.1.1
 
-Language: C#
+Language: C# 4.6.1
 
 Projekt graficzny z użyciem windows forms.
 
