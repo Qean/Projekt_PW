@@ -1,26 +1,47 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
+using Projekt_PW.Properties;
 
 namespace Projekt_PW
 {
     public partial class Form1 : Form
     {
+        private int _x;
+        private int _y;
+        private int direction;
+
         public Form1()
         {
             InitializeComponent();
+            _x = 220;
+            _y = 131;
+            direction = 1;
         }
 
-        private void pictureBox1_Paint(object sender, PaintEventArgs e)
+
+        private void Main_Timer_Tick(object sender, EventArgs e)
         {
-            //e.Graphics.FillRectangle(Brushes.Aqua, 30, 30, 30, 30);
-            e.Graphics.DrawImage(global::Projekt_PW.Properties.Resources.Projekt_PW_rzeka, 30, 30, 30, 30);
+            //DoubleBuffered = true;
+            if (_x <= 650 - 106 && direction == 1)
+            {
+                _x += 4;
+                if (_x >= 650 - 106)
+                {
+                    direction = 0;
+                }
+            }
+            else if (_x >= 220 && direction == 0)
+            {
+                _x -= 4;
+                if (_x <= 220)
+                {
+                    direction = 1;
+                }
+            }
+            pictureBox2.Location = new Point(_x, _y);
+            //_y++;
         }
     }
 }
