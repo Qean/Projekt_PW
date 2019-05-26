@@ -82,10 +82,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\cffd1a448b7bb347056a6df4893fa381.png" />
     <Content Include="Resources\Projekt_PW_rzeka.png" />
     <Content Include="Resources\Prom.png" />
-    <Content Include="Resources\Samochod1.png" />
+    <Content Include="Resources\Samochod.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
