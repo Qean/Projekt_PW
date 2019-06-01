@@ -47,6 +47,9 @@ namespace Projekt_PW
             this.pictureBox10 = new System.Windows.Forms.PictureBox();
             this.pictureBox11 = new System.Windows.Forms.PictureBox();
             this.pictureBox12 = new System.Windows.Forms.PictureBox();
+            this.pictureBox13 = new System.Windows.Forms.PictureBox();
+            this.pictureBox14 = new System.Windows.Forms.PictureBox();
+            this.pictureBox15 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize) (this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize) (this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize) (this.pictureBox3)).BeginInit();
@@ -59,6 +62,9 @@ namespace Projekt_PW
             ((System.ComponentModel.ISupportInitialize) (this.pictureBox10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize) (this.pictureBox11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize) (this.pictureBox12)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize) (this.pictureBox13)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize) (this.pictureBox14)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize) (this.pictureBox15)).BeginInit();
             this.SuspendLayout();
             // 
             // Main_Timer
@@ -208,11 +214,50 @@ namespace Projekt_PW
             this.pictureBox12.TabStop = false;
             this.pictureBox12.Visible = false;
             // 
+            // pictureBox13
+            // 
+            this.pictureBox13.Image = ((System.Drawing.Image) (resources.GetObject("pictureBox13.Image")));
+            this.pictureBox13.Location = new System.Drawing.Point(763, 190);
+            this.pictureBox13.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.pictureBox13.Name = "pictureBox13";
+            this.pictureBox13.Size = new System.Drawing.Size(46, 33);
+            this.pictureBox13.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox13.TabIndex = 12;
+            this.pictureBox13.TabStop = false;
+            this.pictureBox13.Visible = false;
+            // 
+            // pictureBox14
+            // 
+            this.pictureBox14.Image = ((System.Drawing.Image) (resources.GetObject("pictureBox14.Image")));
+            this.pictureBox14.Location = new System.Drawing.Point(817, 190);
+            this.pictureBox14.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.pictureBox14.Name = "pictureBox14";
+            this.pictureBox14.Size = new System.Drawing.Size(46, 33);
+            this.pictureBox14.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox14.TabIndex = 13;
+            this.pictureBox14.TabStop = false;
+            this.pictureBox14.Visible = false;
+            // 
+            // pictureBox15
+            // 
+            this.pictureBox15.Image = ((System.Drawing.Image) (resources.GetObject("pictureBox15.Image")));
+            this.pictureBox15.Location = new System.Drawing.Point(871, 190);
+            this.pictureBox15.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.pictureBox15.Name = "pictureBox15";
+            this.pictureBox15.Size = new System.Drawing.Size(46, 33);
+            this.pictureBox15.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox15.TabIndex = 14;
+            this.pictureBox15.TabStop = false;
+            this.pictureBox15.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1088, 599);
+            this.Controls.Add(this.pictureBox15);
+            this.Controls.Add(this.pictureBox14);
+            this.Controls.Add(this.pictureBox13);
             this.Controls.Add(this.pictureBox12);
             this.Controls.Add(this.pictureBox11);
             this.Controls.Add(this.pictureBox10);
@@ -229,7 +274,6 @@ namespace Projekt_PW
             this.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.Name = "Form1";
             this.Text = "Projekt PW";
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             ((System.ComponentModel.ISupportInitialize) (this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize) (this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize) (this.pictureBox3)).EndInit();
@@ -242,6 +286,9 @@ namespace Projekt_PW
             ((System.ComponentModel.ISupportInitialize) (this.pictureBox10)).EndInit();
             ((System.ComponentModel.ISupportInitialize) (this.pictureBox11)).EndInit();
             ((System.ComponentModel.ISupportInitialize) (this.pictureBox12)).EndInit();
+            ((System.ComponentModel.ISupportInitialize) (this.pictureBox13)).EndInit();
+            ((System.ComponentModel.ISupportInitialize) (this.pictureBox14)).EndInit();
+            ((System.ComponentModel.ISupportInitialize) (this.pictureBox15)).EndInit();
             this.ResumeLayout(false);
         }
 
@@ -259,6 +306,9 @@ namespace Projekt_PW
         private System.Windows.Forms.PictureBox pictureBox10;
         private System.Windows.Forms.PictureBox pictureBox11;
         private System.Windows.Forms.PictureBox pictureBox12;
+        private System.Windows.Forms.PictureBox pictureBox13;
+        private System.Windows.Forms.PictureBox pictureBox14;
+        private System.Windows.Forms.PictureBox pictureBox15;
         private System.Windows.Forms.Timer Main_Timer;
     }
 }
