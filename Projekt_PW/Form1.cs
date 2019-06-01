@@ -12,12 +12,14 @@ namespace Projekt_PW
     {
         public delegate void SetVisibilityDelegate(bool visibility, int index);
 
-        private const int LiczbaBoxow = 10;
+        private const int LiczbaBoxow = 13;
         private static Form1 _form;
-        private volatile ManualResetEvent eventHandle1;
-        private volatile ManualResetEvent eventHandle2;
+        private volatile AutoResetEvent eventHandle1;
+        private volatile AutoResetEvent eventHandle2;
+        private volatile AutoResetEvent eventHandle3;
         private volatile int eventFlag1;
         private volatile int eventFlag2;
+        private int[] _stopPlaces;
         private int _direction;
         private int _promFlag;
         private readonly int _leftBank;
@@ -29,12 +31,13 @@ namespace Projekt_PW
 
         public SetVisibilityDelegate MyDelegate;
 
-        public Form1(ManualResetEvent eventHandle1, ManualResetEvent eventHandle2)
+        public Form1(AutoResetEvent eventHandle1, AutoResetEvent eventHandle2, AutoResetEvent eventHandle3)
         {
             MyDelegate = Set_Visibility;
             _form = this;
             this.eventHandle1 = eventHandle1;
             this.eventHandle2 = eventHandle2;
+            this.eventHandle3 = eventHandle3;
             eventFlag1 = 1;
             eventFlag2 = 1;
             InitializeComponent();
@@ -56,20 +59,65 @@ namespace Projekt_PW
             _arrayBox[7] = pictureBox10;
             _arrayBox[8] = pictureBox11;
             _arrayBox[9] = pictureBox12;
+            _arrayBox[10] = pictureBox13;
+            _arrayBox[11] = pictureBox14;
+            _arrayBox[12] = pictureBox15;
+            _stopPlaces = new int[4];
+            for (int i = 0; i < _stopPlaces.Length; i++)
+            {
+                _stopPlaces[i] = _arrayBox[i].Left;
+            }
         }
 
 
         private void Main_Timer_Tick(object sender, EventArgs e)
         {
+            if (_promFlag == 0 && _x == _leftBank)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    if (_arrayBox[i].Visible)
+                    {
+                        _arrayBox[i].Location = new Point(_arrayBox[i].Left + 4, _arrayBox[i].Top);
+                        if (_arrayBox[i].Right >= _leftBank && _promFlag == 0)
+                        {
+                            eventHandle1.Set();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    if (_arrayBox[i].Visible && _arrayBox[i].Left <= _stopPlaces[i])
+                    {
+                        _arrayBox[i].Location = new Point(_arrayBox[i].Left + 4, _arrayBox[i].Top);
+                    }
+                }
+                
+                for (int i = 10; i < 13; i++)
+                {
+                    if (_arrayBox[i].Visible)
+                    {
+                        _arrayBox[i].Location = new Point(_arrayBox[i].Left + 4, _arrayBox[i].Top);
+                        if (_arrayBox[i].Right >= 824)
+                            eventHandle3.Set();
+                    }
+                }
+                
+            }
             if (eventFlag1 == 1 && _x == _leftBank)
             {
-                eventHandle1.Set();
                 eventFlag1 = 0;
             }
 
-            if (eventFlag2 == 1 && _x == _rightBank)
+            if (_x >= _rightBank)
             {
-                eventHandle2.Set();
+                for (int i = 0; i < 6; i++)
+                {
+                    eventHandle2.Set();
+                }
                 eventFlag2 = 0;
             }
 
@@ -115,6 +163,7 @@ namespace Projekt_PW
                         _x -= 4;
                     }
                 }
+
                 pictureBox2.Location = new Point(_x, pictureBox2.Top);
             }
         }
@@ -122,32 +171,34 @@ namespace Projekt_PW
         public void Set_Visibility(bool visibility, int index)
         {
             _arrayBox[index].Visible = visibility;
-            if (index > 3 && visibility)
+            if (index > 9)
+            {
+                _arrayBox[index].Location = new Point(652, _arrayBox[index].Top);
+            }
+            else if (index > 3 && visibility)
+            {
                 _promCapacity++;
+            }
             else if (index > 3 && visibility == false)
+            {
                 _promCapacity--;
-        }
-
-        public int Get_Prom_Flag()
-        {
-            return _promFlag;
-        }
-
-        public int Get_Direction_Flag()
-        {
-            return _direction;
+            }
+            else
+            {
+                _arrayBox[index].Location = new Point(0, _arrayBox[index].Top);
+            }
         }
 
         public void Set_Prom_Flag(int flag)
         {
             _promFlag = flag;
         }
-        
+
         public void Set_event1_Flag(int flag)
         {
             eventFlag1 = flag;
         }
-        
+
         public void Set_event2_Flag(int flag)
         {
             eventFlag2 = flag;
@@ -156,9 +207,13 @@ namespace Projekt_PW
         public void Change_Direction()
         {
             if (_direction == 0)
+            {
                 _direction = 1;
+            }
             else
+            {
                 _direction = 0;
+            }
         }
     }
 }

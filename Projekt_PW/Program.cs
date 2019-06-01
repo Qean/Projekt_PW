@@ -8,8 +8,9 @@ namespace Projekt_PW
     internal static class Program
     {
         public static Form1 form;
-        public static volatile ManualResetEvent eventHandle1;
-        public static volatile ManualResetEvent eventHandle2;
+        public static volatile AutoResetEvent eventHandle1;
+        public static volatile AutoResetEvent eventHandle2;
+        public static volatile AutoResetEvent eventHandle3;
 
         /// <summary>
         ///     The main entry point for the application.
@@ -19,10 +20,11 @@ namespace Projekt_PW
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            eventHandle1 = new ManualResetEvent(false);
-            eventHandle2 = new ManualResetEvent(false);
-            form = new Form1(eventHandle1, eventHandle2);
-            var samochod = new Samochod(4, 6, 20, form, eventHandle1, eventHandle2);
+            eventHandle1 = new AutoResetEvent(false);
+            eventHandle2 = new AutoResetEvent(false);
+            eventHandle3 = new AutoResetEvent(false);
+            form = new Form1(eventHandle1, eventHandle2, eventHandle3);
+            var samochod = new Samochod(4, 6, 20, form, eventHandle1, eventHandle2, eventHandle3);
             Application.Run(form);
         }
     }

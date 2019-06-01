@@ -77,7 +77,7 @@ namespace Projekt_PW
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             this.pictureBox2.Image = global::Projekt_PW.Properties.Resources.Prom;
-            this.pictureBox2.Location = new System.Drawing.Point(257, 108);
+            this.pictureBox2.Location = new System.Drawing.Point(255, 108);
             this.pictureBox2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(118, 170);
@@ -94,7 +94,7 @@ namespace Projekt_PW
             this.pictureBox3.TabStop = false;
             this.pictureBox3.Visible = false;
             this.pictureBox4.Image = ((System.Drawing.Image) (resources.GetObject("pictureBox4.Image")));
-            this.pictureBox4.Location = new System.Drawing.Point(150, 190);
+            this.pictureBox4.Location = new System.Drawing.Point(152, 190);
             this.pictureBox4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(46, 33);
@@ -103,7 +103,7 @@ namespace Projekt_PW
             this.pictureBox4.TabStop = false;
             this.pictureBox4.Visible = false;
             this.pictureBox5.Image = ((System.Drawing.Image) (resources.GetObject("pictureBox5.Image")));
-            this.pictureBox5.Location = new System.Drawing.Point(98, 190);
+            this.pictureBox5.Location = new System.Drawing.Point(96, 190);
             this.pictureBox5.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(46, 33);
@@ -112,7 +112,7 @@ namespace Projekt_PW
             this.pictureBox5.TabStop = false;
             this.pictureBox5.Visible = false;
             this.pictureBox6.Image = ((System.Drawing.Image) (resources.GetObject("pictureBox6.Image")));
-            this.pictureBox6.Location = new System.Drawing.Point(46, 190);
+            this.pictureBox6.Location = new System.Drawing.Point(44, 190);
             this.pictureBox6.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.pictureBox6.Name = "pictureBox6";
             this.pictureBox6.Size = new System.Drawing.Size(46, 33);
@@ -193,7 +193,7 @@ namespace Projekt_PW
             this.pictureBox14.TabStop = false;
             this.pictureBox14.Visible = false;
             this.pictureBox15.Image = ((System.Drawing.Image) (resources.GetObject("pictureBox15.Image")));
-            this.pictureBox15.Location = new System.Drawing.Point(871, 190);
+            this.pictureBox15.Location = new System.Drawing.Point(872, 190);
             this.pictureBox15.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.pictureBox15.Name = "pictureBox15";
             this.pictureBox15.Size = new System.Drawing.Size(46, 33);

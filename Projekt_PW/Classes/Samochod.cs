@@ -8,29 +8,41 @@ namespace Projekt_PW.Classes
 {
     public class Samochod
     {
-        private volatile ManualResetEvent eventHandle1;
-        private volatile ManualResetEvent eventHandle2;
+        private volatile AutoResetEvent eventHandle1;
+        private volatile AutoResetEvent eventHandle2;
+        private volatile AutoResetEvent eventHandle3;
         private readonly Form1 _form;
-        private readonly Mutex _mutexDroga;
+        private readonly Mutex _mutexDroga1;
+        private readonly Mutex _mutexDroga2;
         private readonly Mutex _mutexProm;
-        private readonly Semaphore _semaphoreDroga;
+        private readonly Semaphore _semaphoreDroga1;
+        private readonly Semaphore _semaphoreDroga2;
         private readonly Semaphore _semaphoreProm;
         private volatile int _count;
-        private volatile bool[] testDroga;
+        private volatile bool[] testDroga1;
+        private volatile bool[] testDroga2;
         private volatile bool[] testProm;
-        static ThreadLocal<int> _drogaMiejsce = new ThreadLocal<int>(() => 0);
+        static ThreadLocal<int> _droga1Miejsce = new ThreadLocal<int>(() => 0);
+        static ThreadLocal<int> _droga2Miejsce = new ThreadLocal<int>(() => 0);
         static ThreadLocal<int> _promMiejsce = new ThreadLocal<int>(() => 0);
 
         public Samochod(int miejscaDroga, int miejscaProm, int liczbaSamochodow, Form1 form,
-            ManualResetEvent eventHandle1, ManualResetEvent eventHandle2)
+            AutoResetEvent eventHandle1, AutoResetEvent eventHandle2, AutoResetEvent eventHandle3)
         {
             _count = 0;
             this.eventHandle1 = eventHandle1;
             this.eventHandle2 = eventHandle2;
-            testDroga = new bool[miejscaDroga];
+            this.eventHandle3 = eventHandle3;
+            testDroga1 = new bool[miejscaDroga];
             for (int i = 0; i < miejscaDroga; i++)
             {
-                testDroga[i] = true;
+                testDroga1[i] = true;
+            }
+
+            testDroga2 = new bool[3];
+            for (int i = 0; i < 3; i++)
+            {
+                testDroga2[i] = true;
             }
 
             testProm = new bool[miejscaProm];
@@ -41,15 +53,16 @@ namespace Projekt_PW.Classes
 
             var liczbaSamochodow1 = liczbaSamochodow;
             _form = form;
-            _semaphoreDroga = new Semaphore(4, 4);
+            _semaphoreDroga1 = new Semaphore(4, 4);
+            _semaphoreDroga2 = new Semaphore(3, 3);
             _semaphoreProm = new Semaphore(6, 6);
-            _mutexDroga = new Mutex();
+            _mutexDroga1 = new Mutex();
+            _mutexDroga2 = new Mutex();
             _mutexProm = new Mutex();
             var samochod = new Thread[liczbaSamochodow1];
             for (var i = 0; i < liczbaSamochodow1; i++)
             {
-                samochod[i] = new Thread(Kod_Samochodu);
-                samochod[i].Name = "Samochod " + i;
+                samochod[i] = new Thread(Kod_Samochodu) {Name = "Samochod " + i};
                 samochod[i].Start();
             }
         }
@@ -60,29 +73,26 @@ namespace Projekt_PW.Classes
             Thread.Sleep(rand.Next(1500, 2000));
             //Console.WriteLine(@"{0} zaczyna dzialanie", Thread.CurrentThread.Name);
 
-            _semaphoreDroga.WaitOne();
-            _mutexDroga.WaitOne(); //Poczatek sekcji krytycznej zajecia miejsca na drodze
-            for (int i = 0; i < testDroga.Length; i++)
+            _semaphoreDroga1.WaitOne();
+            _mutexDroga1.WaitOne(); //Poczatek sekcji krytycznej zajecia miejsca na drodze
+            for (int i = 0; i < testDroga1.Length; i++)
             {
-                if (testDroga[i])
+                if (testDroga1[i])
                 {
-                    _drogaMiejsce.Value = i;
-                    testDroga[i] = false;
+                    _droga1Miejsce.Value = i;
+                    testDroga1[i] = false;
                     break;
                 }
             }
-            _form.Invoke(_form.MyDelegate, true, _drogaMiejsce.Value);
+
+            _form.Invoke(_form.MyDelegate, true, _droga1Miejsce.Value);
             Thread.Sleep(rand.Next(800, 2000));
-            _mutexDroga.ReleaseMutex(); //Koniec sekcji krytycznej zajecia miejsca na drodze
-            
+            _mutexDroga1.ReleaseMutex(); //Koniec sekcji krytycznej zajecia miejsca na drodze
+
             eventHandle1.WaitOne();
-            _form.Set_event2_Flag(1);
-            Console.WriteLine(@"1");
 
             _semaphoreProm.WaitOne();
-            Console.WriteLine(@"2");
             _mutexProm.WaitOne(); //Poczatek sekcji krytycznej zajecia miejsca na promie
-            Console.WriteLine(@"3 {0} wjezdza na prom", Thread.CurrentThread.Name);
             for (int i = 0; i < testProm.Length; i++)
             {
                 if (testProm[i])
@@ -92,19 +102,31 @@ namespace Projekt_PW.Classes
                     break;
                 }
             }
-            _form.Invoke(_form.MyDelegate, false, _drogaMiejsce.Value);
-            testDroga[_drogaMiejsce.Value] = true;
-            _semaphoreDroga.Release();
+
+            _form.Invoke(_form.MyDelegate, false, _droga1Miejsce.Value);
+            testDroga1[_droga1Miejsce.Value] = true;
             _form.Invoke(_form.MyDelegate, true, _promMiejsce.Value + 4);
             Interlocked.Increment(ref _count);
-            Thread.Sleep(rand.Next(800, 2000));
             _mutexProm.ReleaseMutex(); //Koniec sekcji krytycznej zajecia miejsca na promie
+            _semaphoreDroga1.Release();
 
+            eventHandle2.Reset();
             eventHandle2.WaitOne();
-
             _mutexProm.WaitOne(); //Poczatek sekcji krytycznej zwolnienia miejsca na promie
             _form.Invoke(_form.MyDelegate, false, _promMiejsce.Value + 4);
             testProm[_promMiejsce.Value] = true;
+            _semaphoreDroga2.WaitOne();
+            _mutexDroga2.WaitOne();
+            for (int i = 0; i < testDroga2.Length; i++)
+            {
+                if (testDroga2[i])
+                {
+                    _droga2Miejsce.Value = i;
+                    testDroga2[i] = false;
+                    break;
+                }
+            }
+            _form.Invoke(_form.MyDelegate, true, _droga2Miejsce.Value + 10);
             Interlocked.Decrement(ref _count);
             if (_count == 0)
             {
@@ -116,10 +138,24 @@ namespace Projekt_PW.Classes
             }
             Thread.Sleep(rand.Next(800, 2000));
             _mutexProm.ReleaseMutex(); //Koniec sekcji krytycznej zajecia miejsca na promie
-            eventHandle1.WaitOne();
             _semaphoreProm.Release();
 
-            Console.WriteLine(@"{0} zakonczy dzialanie", Thread.CurrentThread.Name);
+            
+            Console.WriteLine(1);
+            //Thread.Sleep(rand.Next(800, 2000));
+            _mutexDroga2.ReleaseMutex();
+            
+            Console.WriteLine(2);
+            eventHandle3.WaitOne();
+            _form.Invoke(_form.MyDelegate, false, _droga2Miejsce.Value + 10);
+            Console.WriteLine(3);
+            _mutexDroga2.WaitOne();
+            testDroga2[_droga2Miejsce.Value] = true;
+            //Thread.Sleep(rand.Next(800, 2000));
+            _mutexDroga2.ReleaseMutex();
+            
+            _semaphoreDroga2.Release();
+
             Thread.CurrentThread.Interrupt();
         }
     }
