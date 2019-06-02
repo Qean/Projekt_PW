@@ -63,6 +63,7 @@ namespace Projekt_PW.Classes
             for (var i = 0; i < liczbaSamochodow1; i++)
             {
                 samochod[i] = new Thread(Kod_Samochodu) {Name = "Samochod " + i};
+                samochod[i].IsBackground = true;
                 samochod[i].Start();
             }
         }
@@ -70,8 +71,7 @@ namespace Projekt_PW.Classes
         public void Kod_Samochodu()
         {
             var rand = new Random();
-            Thread.Sleep(rand.Next(1500, 2000));
-            //Console.WriteLine(@"{0} zaczyna dzialanie", Thread.CurrentThread.Name);
+            Thread.Sleep(rand.Next(1000, 2000));
 
             _semaphoreDroga1.WaitOne();
             _mutexDroga1.WaitOne(); //Poczatek sekcji krytycznej zajecia miejsca na drodze
@@ -86,7 +86,7 @@ namespace Projekt_PW.Classes
             }
 
             _form.Invoke(_form.MyDelegate, true, _droga1Miejsce.Value);
-            Thread.Sleep(rand.Next(800, 2000));
+            Thread.Sleep(rand.Next(1000, 2000));
             _mutexDroga1.ReleaseMutex(); //Koniec sekcji krytycznej zajecia miejsca na drodze
 
             eventHandle1.WaitOne();
@@ -132,26 +132,19 @@ namespace Projekt_PW.Classes
             {
                 _form.Change_Direction();
                 _form.Set_Prom_Flag(0);
-                _form.Set_event2_Flag(0);
                 _form.Set_event1_Flag(1);
                 eventHandle2.Reset();
             }
-            Thread.Sleep(rand.Next(800, 2000));
+            Thread.Sleep(rand.Next(1000, 2000));
             _mutexProm.ReleaseMutex(); //Koniec sekcji krytycznej zajecia miejsca na promie
             _semaphoreProm.Release();
-
             
-            Console.WriteLine(1);
-            //Thread.Sleep(rand.Next(800, 2000));
             _mutexDroga2.ReleaseMutex();
             
-            Console.WriteLine(2);
             eventHandle3.WaitOne();
             _form.Invoke(_form.MyDelegate, false, _droga2Miejsce.Value + 10);
-            Console.WriteLine(3);
             _mutexDroga2.WaitOne();
             testDroga2[_droga2Miejsce.Value] = true;
-            //Thread.Sleep(rand.Next(800, 2000));
             _mutexDroga2.ReleaseMutex();
             
             _semaphoreDroga2.Release();

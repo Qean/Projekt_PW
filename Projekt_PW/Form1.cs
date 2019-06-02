@@ -18,8 +18,9 @@ namespace Projekt_PW
         private volatile AutoResetEvent eventHandle2;
         private volatile AutoResetEvent eventHandle3;
         private volatile int eventFlag1;
-        private volatile int eventFlag2;
         private int[] _stopPlaces;
+        private int _locDiff;
+        private int _closestPicture;
         private int _direction;
         private int _promFlag;
         private readonly int _leftBank;
@@ -39,12 +40,13 @@ namespace Projekt_PW
             this.eventHandle2 = eventHandle2;
             this.eventHandle3 = eventHandle3;
             eventFlag1 = 1;
-            eventFlag2 = 1;
             InitializeComponent();
             _leftBank = pictureBox2.Left;
             _rightBank = 652 - 108;
             _x = pictureBox2.Left;
+            _locDiff = -1000;
             _direction = 1;
+            _closestPicture = 0;
             _promFlag = 0;
             _promCapacity = 0;
             _promTimer = 0;
@@ -69,20 +71,85 @@ namespace Projekt_PW
             }
         }
 
-
-        private void Main_Timer_Tick(object sender, EventArgs e)
+        public void Set_Visibility(bool visibility, int index)
         {
+            _arrayBox[index].Visible = visibility;
+            if (index > 9)
+            {
+                _arrayBox[index].Location = new Point(652, _arrayBox[index].Top);
+            }
+            else if (index > 3 && visibility)
+            {
+                _promCapacity++;
+            }
+            else if (index > 3 && visibility == false)
+            {
+                _promCapacity--;
+            }
+            else
+            {
+                _arrayBox[index].Location = new Point(0, _arrayBox[index].Top);
+            }
+        }
+
+        public void Set_Prom_Flag(int flag)
+        {
+            _promFlag = flag;
+        }
+
+        public void Set_event1_Flag(int flag)
+        {
+            eventFlag1 = flag;
+        }
+
+        public void Change_Direction()
+        {
+            if (_direction == 0)
+            {
+                _direction = 1;
+            }
+            else
+            {
+                _direction = 0;
+            }
+        }
+
+        private void Main_Timer_Tick_1(object sender, EventArgs e)
+        {
+           DoubleBuffered = true;
             if (_promFlag == 0 && _x == _leftBank)
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    if (_arrayBox[i].Visible)
+                    _locDiff = 1000;
+                    _closestPicture = i;
+                    for (int j = 0; j < 4; j++)
+                    {
+                        if (_arrayBox[i].Visible && _arrayBox[j].Visible && _arrayBox[i].Left < _arrayBox[j].Left)
+                        {
+                            if (_locDiff > _arrayBox[j].Left - _arrayBox[i].Right)
+                            {
+                                _locDiff = _arrayBox[j].Left - _arrayBox[i].Right ;
+                                _closestPicture = j;
+                            }
+                        }
+                    }
+
+                    if (_arrayBox[i].Visible && _arrayBox[i].Right + 10 < _arrayBox[_closestPicture].Left)
                     {
                         _arrayBox[i].Location = new Point(_arrayBox[i].Left + 4, _arrayBox[i].Top);
-                        if (_arrayBox[i].Right >= _leftBank && _promFlag == 0)
-                        {
-                            eventHandle1.Set();
-                        }
+                    }
+                    else if (_arrayBox[i].Visible && _arrayBox[i].Right < _arrayBox[_closestPicture].Right)
+                    {
+                    }
+                    else if (_locDiff == 1000 && _arrayBox[i].Visible)
+                    {
+                        _arrayBox[i].Location = new Point(_arrayBox[i].Left + 4, _arrayBox[i].Top);
+                    }
+                    
+                    if (_arrayBox[i].Right >= _leftBank && _promFlag == 0)
+                    {
+                        eventHandle1.Set();
                     }
                 }
             }
@@ -90,23 +157,64 @@ namespace Projekt_PW
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    if (_arrayBox[i].Visible && _arrayBox[i].Left <= _stopPlaces[i])
+                    _locDiff = 1000;
+                    _closestPicture = i;
+                    for (int j = 0; j < 4; j++)
+                    {
+                        if (_arrayBox[i].Visible && _arrayBox[j].Visible && _arrayBox[i].Left < _arrayBox[j].Left)
+                        {
+                            if (_locDiff > _arrayBox[j].Left - _arrayBox[i].Right)
+                            {
+                                _locDiff = _arrayBox[j].Left - _arrayBox[i].Right ;
+                                _closestPicture = j;
+                            }
+                        }
+                    }
+
+                    if (_arrayBox[i].Visible && _arrayBox[i].Right + 10 < _arrayBox[_closestPicture].Left)
+                    {
+                        _arrayBox[i].Location = new Point(_arrayBox[i].Left + 4, _arrayBox[i].Top);
+                    }
+                    else if (_arrayBox[i].Visible && _arrayBox[i].Right < _arrayBox[_closestPicture].Right)
+                    {
+                    }
+                    else if (_locDiff == 1000 && _arrayBox[i].Visible && _arrayBox[i].Right + 10 < _leftBank )
                     {
                         _arrayBox[i].Location = new Point(_arrayBox[i].Left + 4, _arrayBox[i].Top);
                     }
                 }
-                
+
                 for (int i = 10; i < 13; i++)
                 {
-                    if (_arrayBox[i].Visible)
+                    _locDiff = 1000;
+                    _closestPicture = i;
+                    for (int j = 0; j < 4; j++)
+                    {
+                        if (_arrayBox[i].Visible && _arrayBox[j].Visible && _arrayBox[i].Left < _arrayBox[j].Left)
+                        {
+                            if (_locDiff > _arrayBox[j].Left - _arrayBox[i].Right)
+                            {
+                                _locDiff = _arrayBox[j].Left - _arrayBox[i].Right ;
+                                _closestPicture = j;
+                            }
+                        }
+                    }
+
+                    if (_arrayBox[i].Visible && _arrayBox[i].Right + 10 < _arrayBox[_closestPicture].Left)
+                    {
+                        _arrayBox[i].Location = new Point(_arrayBox[i].Left + 4, _arrayBox[i].Top);
+                    }
+                    else if (_arrayBox[i].Visible && _arrayBox[i].Right < _arrayBox[_closestPicture].Right)
+                    {
+                    }else if (_arrayBox[i].Visible)
                     {
                         _arrayBox[i].Location = new Point(_arrayBox[i].Left + 4, _arrayBox[i].Top);
                         if (_arrayBox[i].Right >= 824)
                             eventHandle3.Set();
                     }
                 }
-                
             }
+
             if (eventFlag1 == 1 && _x == _leftBank)
             {
                 eventFlag1 = 0;
@@ -118,7 +226,7 @@ namespace Projekt_PW
                 {
                     eventHandle2.Set();
                 }
-                eventFlag2 = 0;
+
             }
 
             if (_x == _leftBank)
@@ -166,54 +274,7 @@ namespace Projekt_PW
 
                 pictureBox2.Location = new Point(_x, pictureBox2.Top);
             }
-        }
-
-        public void Set_Visibility(bool visibility, int index)
-        {
-            _arrayBox[index].Visible = visibility;
-            if (index > 9)
-            {
-                _arrayBox[index].Location = new Point(652, _arrayBox[index].Top);
-            }
-            else if (index > 3 && visibility)
-            {
-                _promCapacity++;
-            }
-            else if (index > 3 && visibility == false)
-            {
-                _promCapacity--;
-            }
-            else
-            {
-                _arrayBox[index].Location = new Point(0, _arrayBox[index].Top);
-            }
-        }
-
-        public void Set_Prom_Flag(int flag)
-        {
-            _promFlag = flag;
-        }
-
-        public void Set_event1_Flag(int flag)
-        {
-            eventFlag1 = flag;
-        }
-
-        public void Set_event2_Flag(int flag)
-        {
-            eventFlag2 = flag;
-        }
-
-        public void Change_Direction()
-        {
-            if (_direction == 0)
-            {
-                _direction = 1;
-            }
-            else
-            {
-                _direction = 0;
-            }
+            PromTime.Text = "Czas do odplyniecia promu: " + (int) Math.Abs(10 - _promTimer);
         }
     }
 }
