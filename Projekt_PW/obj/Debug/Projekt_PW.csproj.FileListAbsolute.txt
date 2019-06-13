@@ -8,3 +8,13 @@ C:\Users\AnarosPC\Programowanie\RiderProjects\Projekt_PW\Projekt_PW\obj\Debug\Pr
 C:\Users\AnarosPC\Programowanie\RiderProjects\Projekt_PW\Projekt_PW\obj\Debug\Projekt_PW.exe
 C:\Users\AnarosPC\Programowanie\RiderProjects\Projekt_PW\Projekt_PW\obj\Debug\Projekt_PW.pdb
 C:\Users\AnarosPC\Programowanie\RiderProjects\Projekt_PW\Projekt_PW\obj\Debug\Projekt_PW.Form1.resources
+C:\Users\AnarosPC\RiderProjects\Projekt_PW\Projekt_PW\bin\Debug\Projekt_PW.exe.config
+C:\Users\AnarosPC\RiderProjects\Projekt_PW\Projekt_PW\bin\Debug\Projekt_PW.exe
+C:\Users\AnarosPC\RiderProjects\Projekt_PW\Projekt_PW\bin\Debug\Projekt_PW.pdb
+C:\Users\AnarosPC\RiderProjects\Projekt_PW\Projekt_PW\obj\Debug\Projekt_PW.csprojResolveAssemblyReference.cache
+C:\Users\AnarosPC\RiderProjects\Projekt_PW\Projekt_PW\obj\Debug\Projekt_PW.Form1.resources
+C:\Users\AnarosPC\RiderProjects\Projekt_PW\Projekt_PW\obj\Debug\Projekt_PW.Properties.Resources.resources
+C:\Users\AnarosPC\RiderProjects\Projekt_PW\Projekt_PW\obj\Debug\Projekt_PW.csproj.GenerateResource.Cache
+C:\Users\AnarosPC\RiderProjects\Projekt_PW\Projekt_PW\obj\Debug\Projekt_PW.csproj.CoreCompileInputs.cache
+C:\Users\AnarosPC\RiderProjects\Projekt_PW\Projekt_PW\obj\Debug\Projekt_PW.exe
+C:\Users\AnarosPC\RiderProjects\Projekt_PW\Projekt_PW\obj\Debug\Projekt_PW.pdb

@@ -84,7 +84,7 @@
   <ItemGroup>
     <Content Include="Resources\Projekt_PW_rzeka.png" />
     <Content Include="Resources\Prom.png" />
-    <Content Include="Resources\Samochod1.png" />
+    <Content Include="Resources\Samochod.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

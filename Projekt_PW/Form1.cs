@@ -26,6 +26,8 @@ namespace Projekt_PW
         private int _closestPicture;
         private int _direction;
         private int _promFlag;
+        private readonly int _box6Location;
+        private readonly int _box13Location;
         private readonly int _leftBank;
         private readonly int _rightBank;
         private int _x;
@@ -33,6 +35,7 @@ namespace Projekt_PW
         private volatile int _promCapacity;
         private double _promTimer;
         private Samochod _samochod;
+        private bool[] cars = {false, false, false, false};
 
         public void GetSamochod(Samochod samochod)
         {
@@ -75,6 +78,8 @@ namespace Projekt_PW
             _arrayBox[10] = pictureBox13;
             _arrayBox[11] = pictureBox14;
             _arrayBox[12] = pictureBox15;
+            _box6Location = _arrayBox[3].Right;
+            _box13Location = _arrayBox[10].Right;
             _stopPlaces = new int[4];
             for (int i = 0; i < _stopPlaces.Length; i++)
             {
@@ -100,6 +105,16 @@ namespace Projekt_PW
             else
             {
                 _arrayBox[index].Location = new Point(0, _arrayBox[index].Top);
+            }
+
+            if (index < 4 && visibility)
+            {
+                cars[index] = true;
+            }
+
+            if (index < 4 && !visibility)
+            {
+                //cars[index] = false;
             }
         }
 
@@ -146,8 +161,14 @@ namespace Projekt_PW
                         }
                     }
 
-                    if (_arrayBox[i].Visible && _arrayBox[i].Right + 10 < _arrayBox[_closestPicture].Left)
+                    if (_arrayBox[i].Visible && _arrayBox[i].Right < _arrayBox[_closestPicture].Left)
                     {
+                        if (_arrayBox[i].Right > _arrayBox[3].Right && cars[i])
+                        {
+                            _semaphore1Value = _samochod.SemaphoreDroga1.Release();
+                            cars[i] = false;
+                        }
+
                         _arrayBox[i].Location = new Point(_arrayBox[i].Left + 4, _arrayBox[i].Top);
                     }
                     else if (_arrayBox[i].Visible && _arrayBox[i].Right < _arrayBox[_closestPicture].Right)
@@ -156,9 +177,10 @@ namespace Projekt_PW
                     else if (_locDiff == 1000 && _arrayBox[i].Visible)
                     {
                         _arrayBox[i].Location = new Point(_arrayBox[i].Left + 4, _arrayBox[i].Top);
-                        if (_arrayBox[i].Right > _arrayBox[3].Right + 50 && _semaphore1Value == 1)
+                        if (_arrayBox[i].Right > _arrayBox[3].Right && cars[i])
                         {
                             _semaphore1Value = _samochod.SemaphoreDroga1.Release();
+                            cars[i] = false;
                         }
                     }
 
