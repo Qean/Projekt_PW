@@ -261,7 +261,7 @@ namespace Projekt_PW
             // Main_Timer
             // 
             this.Main_Timer.Enabled = true;
-            this.Main_Timer.Tick += new System.EventHandler(this.Main_Timer_Tick_1);
+            this.Main_Timer.Tick += new System.EventHandler(this.Main_Timer_Tick);
             // 
             // PromTime
             // 

@@ -25,6 +25,7 @@ namespace Projekt_PW
             eventHandle3 = new AutoResetEvent(false);
             form = new Form1(eventHandle1, eventHandle2, eventHandle3);
             var samochod = new Samochod(4, 6, 20, form, eventHandle1, eventHandle2, eventHandle3);
+            form.GetSamochod(samochod);
             Application.Run(form);
             
         }

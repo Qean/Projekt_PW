@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
+using Projekt_PW.Classes;
 using Projekt_PW.Properties;
 
 namespace Projekt_PW
@@ -18,6 +19,8 @@ namespace Projekt_PW
         private volatile AutoResetEvent eventHandle2;
         private volatile AutoResetEvent eventHandle3;
         private volatile int eventFlag1;
+        private volatile int _semaphore1Value;
+        private volatile int _semaphore2Value;
         private int[] _stopPlaces;
         private int _locDiff;
         private int _closestPicture;
@@ -29,6 +32,12 @@ namespace Projekt_PW
         private readonly PictureBox[] _arrayBox;
         private volatile int _promCapacity;
         private double _promTimer;
+        private Samochod _samochod;
+
+        public void GetSamochod(Samochod samochod)
+        {
+            _samochod = samochod;
+        }
 
         public SetVisibilityDelegate MyDelegate;
 
@@ -50,6 +59,8 @@ namespace Projekt_PW
             _promFlag = 0;
             _promCapacity = 0;
             _promTimer = 0;
+            _semaphore1Value = 1;
+            _semaphore2Value = 1;
             _arrayBox = new PictureBox[LiczbaBoxow];
             _arrayBox[0] = pictureBox3;
             _arrayBox[1] = pictureBox4;
@@ -114,9 +125,9 @@ namespace Projekt_PW
             }
         }
 
-        private void Main_Timer_Tick_1(object sender, EventArgs e)
+        private void Main_Timer_Tick(object sender, EventArgs e)
         {
-           DoubleBuffered = true;
+            DoubleBuffered = true;
             if (_promFlag == 0 && _x == _leftBank)
             {
                 for (int i = 0; i < 4; i++)
@@ -125,11 +136,11 @@ namespace Projekt_PW
                     _closestPicture = i;
                     for (int j = 0; j < 4; j++)
                     {
-                        if (_arrayBox[i].Visible && _arrayBox[j].Visible && _arrayBox[i].Left < _arrayBox[j].Left)
+                        if (_arrayBox[j].Visible && _arrayBox[i].Left < _arrayBox[j].Left)
                         {
                             if (_locDiff > _arrayBox[j].Left - _arrayBox[i].Right)
                             {
-                                _locDiff = _arrayBox[j].Left - _arrayBox[i].Right ;
+                                _locDiff = _arrayBox[j].Left - _arrayBox[i].Right;
                                 _closestPicture = j;
                             }
                         }
@@ -145,8 +156,12 @@ namespace Projekt_PW
                     else if (_locDiff == 1000 && _arrayBox[i].Visible)
                     {
                         _arrayBox[i].Location = new Point(_arrayBox[i].Left + 4, _arrayBox[i].Top);
+                        if (_arrayBox[i].Right > _arrayBox[3].Right + 50 && _semaphore1Value == 1)
+                        {
+                            _semaphore1Value = _samochod.SemaphoreDroga1.Release();
+                        }
                     }
-                    
+
                     if (_arrayBox[i].Right >= _leftBank && _promFlag == 0)
                     {
                         eventHandle1.Set();
@@ -165,7 +180,7 @@ namespace Projekt_PW
                         {
                             if (_locDiff > _arrayBox[j].Left - _arrayBox[i].Right)
                             {
-                                _locDiff = _arrayBox[j].Left - _arrayBox[i].Right ;
+                                _locDiff = _arrayBox[j].Left - _arrayBox[i].Right;
                                 _closestPicture = j;
                             }
                         }
@@ -178,7 +193,7 @@ namespace Projekt_PW
                     else if (_arrayBox[i].Visible && _arrayBox[i].Right < _arrayBox[_closestPicture].Right)
                     {
                     }
-                    else if (_locDiff == 1000 && _arrayBox[i].Visible && _arrayBox[i].Right + 10 < _leftBank )
+                    else if (_locDiff == 1000 && _arrayBox[i].Visible && _arrayBox[i].Right + 10 < _leftBank)
                     {
                         _arrayBox[i].Location = new Point(_arrayBox[i].Left + 4, _arrayBox[i].Top);
                     }
@@ -194,7 +209,7 @@ namespace Projekt_PW
                         {
                             if (_locDiff > _arrayBox[j].Left - _arrayBox[i].Right)
                             {
-                                _locDiff = _arrayBox[j].Left - _arrayBox[i].Right ;
+                                _locDiff = _arrayBox[j].Left - _arrayBox[i].Right;
                                 _closestPicture = j;
                             }
                         }
@@ -206,7 +221,8 @@ namespace Projekt_PW
                     }
                     else if (_arrayBox[i].Visible && _arrayBox[i].Right < _arrayBox[_closestPicture].Right)
                     {
-                    }else if (_arrayBox[i].Visible)
+                    }
+                    else if (_arrayBox[i].Visible)
                     {
                         _arrayBox[i].Location = new Point(_arrayBox[i].Left + 4, _arrayBox[i].Top);
                         if (_arrayBox[i].Right >= 824)
@@ -226,7 +242,6 @@ namespace Projekt_PW
                 {
                     eventHandle2.Set();
                 }
-
             }
 
             if (_x == _leftBank)
@@ -274,6 +289,7 @@ namespace Projekt_PW
 
                 pictureBox2.Location = new Point(_x, pictureBox2.Top);
             }
+
             PromTime.Text = "Czas do odplyniecia promu: " + (int) Math.Abs(10 - _promTimer);
         }
     }
