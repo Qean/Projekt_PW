@@ -53,8 +53,8 @@ namespace Projekt_PW.Classes
 
             var liczbaSamochodow1 = liczbaSamochodow;
             _form = form;
-            _semaphoreDroga1 = new Semaphore(1, 4);
-            _semaphoreDroga2 = new Semaphore(1, 3);
+            _semaphoreDroga1 = new Semaphore(4, 4);
+            _semaphoreDroga2 = new Semaphore(3, 3);
             _semaphoreProm = new Semaphore(6, 6);
             _mutexDroga1 = new Mutex();
             _mutexDroga2 = new Mutex();
@@ -67,10 +67,6 @@ namespace Projekt_PW.Classes
                 samochod[i].Start();
             }
         }
-
-        public Semaphore SemaphoreDroga1 => _semaphoreDroga1;
-
-        public Semaphore SemaphoreDroga2 => _semaphoreDroga2;
 
         public void Kod_Samochodu()
         {
@@ -90,7 +86,7 @@ namespace Projekt_PW.Classes
             }
 
             _form.Invoke(_form.MyDelegate, true, _droga1Miejsce.Value);
-            //Thread.Sleep(rand.Next(1000, 2000));
+            Thread.Sleep(rand.Next(1000, 2000));
             _mutexDroga1.ReleaseMutex(); //Koniec sekcji krytycznej zajecia miejsca na drodze
 
             eventHandle1.WaitOne();
@@ -139,7 +135,7 @@ namespace Projekt_PW.Classes
                 _form.Set_event1_Flag(1);
                 eventHandle2.Reset();
             }
-            //Thread.Sleep(rand.Next(1000, 2000));
+            Thread.Sleep(rand.Next(1000, 2000));
             _mutexProm.ReleaseMutex(); //Koniec sekcji krytycznej zajecia miejsca na promie
             _semaphoreProm.Release();
             
